@@ -1,6 +1,6 @@
-# pantry-data-platform
+# Cacau
 
-Plataforma de dados sobre consumo doméstico, construída a partir de **notas fiscais eletrônicas (NFC-e)**.
+**Plataforma de dados sobre consumo doméstico, construída a partir de notas fiscais eletrônicas (NFC-e).**
 
 Responde a perguntas que um extrato bancário não responde:
 
@@ -8,6 +8,8 @@ Responde a perguntas que um extrato bancário não responde:
 - *Quanto vou gastar nesta compra, antes de passar no caixa?*
 - *Em quantos dias o café vai acabar?*
 - *Quanto me custa a fidelidade a uma marca?*
+
+> **Sobre o nome:** Cacau é a cachorra da casa. Também é o nome do aplicativo de lista de compras que originou este projeto — em uso diário por duas pessoas há meses. A plataforma de dados nasceu da necessidade real, não do contrário.
 
 ---
 
@@ -17,7 +19,7 @@ Responde a perguntas que um extrato bancário não responde:
 
 O documento central deste repositório, hoje, é o [**Registro de Decisões Arquiteturais**](./DECISOES.md) — 19 decisões, cada uma com contexto, alternativas rejeitadas e consequências.
 
-> Este projeto é construído **design-first**: as decisões vêm antes do código, e o histórico de commits registra essa ordem. Os erros de modelagem também estão documentados — a seção *"Erros cometidos e corrigidos"* do ADR é intencional.
+> Este projeto é construído **design-first**: as decisões vêm antes do código. Os erros de modelagem também estão documentados — a seção *"Erros cometidos e corrigidos"* do ADR é intencional.
 
 ### Roteiro
 
@@ -34,14 +36,14 @@ O documento central deste repositório, hoje, é o [**Registro de Decisões Arqu
 
 ## Contexto
 
-Não é um projeto sobre um dataset baixado. É a plataforma de dados de uma **aplicação em uso real** — uma lista de compras compartilhada, usada diariamente por duas pessoas há meses.
+Não é um projeto sobre um dataset baixado. É a plataforma de dados de uma **aplicação em uso real**.
 
 Essa origem é o que dá substância ao trabalho. Vários dos problemas modelados aqui **não apareceriam em dado sintético**:
 
-- O usuário adiciona o produto **antes** de ele acabar → o evento de interesse é **censurado**
-- Ele troca de marca conforme o preço → o erro do modelo precisa ser **decomposto em preço × mix × volume**
-- A nota fiscal **não traz código de barras**, só o código interno da loja → comparar preço entre mercados exige **resolução de identidade**
-- Existe vocabulário doméstico que nenhum modelo genérico resolve — *"alburgue"* é hambúrguer, e só um dicionário curado sabe disso
+- O usuário adiciona o produto **antes** de ele acabar → o evento de interesse é **censurado** ([ADR-010](./DECISOES.md#adr-010))
+- Ele troca de marca conforme o preço → o erro do modelo precisa ser **decomposto em preço × mix × volume** ([ADR-012](./DECISOES.md#adr-012))
+- A nota fiscal **não traz código de barras**, só o código interno da loja → comparar preço entre mercados exige **resolução de identidade** ([ADR-005](./DECISOES.md#adr-005))
+- Existe vocabulário doméstico que nenhum modelo genérico resolve — *"alburgue"* é hambúrguer, e só um dicionário curado sabe disso ([ADR-013](./DECISOES.md#adr-013))
 
 ---
 
@@ -90,7 +92,7 @@ Custo de infraestrutura: **R$ 0**.
 
 ## Privacidade
 
-Notas fiscais contêm **CPF e nome do consumidor**. O parser descarta esses campos **antes da gravação** — eles nunca entram no banco (ADR-006).
+Notas fiscais contêm **CPF e nome do consumidor**. O parser descarta esses campos **antes da gravação** — eles nunca entram no banco ([ADR-006](./DECISOES.md#adr-006)).
 
 Nenhum dado real é versionado. O ambiente de demonstração usa **dados sintéticos**.
 
