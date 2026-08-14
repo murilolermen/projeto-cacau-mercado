@@ -1,0 +1,15 @@
+# Credenciais — nunca commitar (ADR-006)
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# dbt (a partir da Fase 3)
+dbt_packages/
+target/
+logs/
+
+.DS_Store
