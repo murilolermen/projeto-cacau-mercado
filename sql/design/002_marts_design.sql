@@ -80,12 +80,14 @@ CREATE TABLE marts.fato_item_compra (
 );
 
 -- ── fato_estoque_casa — periodic snapshot ──────────────────────────────
--- NOTA DE DESIGN, ainda em aberto — revisar com o autor antes da Fase 3:
--- o ADR-007 descreve o grão como "1 produto × 1 dia", mas o ADR-011 é
--- explícito que consumo (e estoque, que é consumo acumulado) se mede no
--- ITEM_CONSUMO, não na marca ("você não consome marca, consome leite").
--- Modelado abaixo no grão item_consumo, por consistência com o ADR-011 —
--- mas é uma escolha minha, não uma decisão já fechada no decisoes.md.
+-- Grão fechado em item_consumo (não em produto, apesar da redação literal
+-- do ADR-007). Motivo: o ADR-011 é explícito que consumo se mede no
+-- genérico, não na marca ("você não consome marca, consome leite"), e a
+-- taxa de consumo (ADR-009) já é calculada nesse nível — fatiar estoque
+-- por produto exigiria saber de antemão qual marca será comprada a
+-- seguir, o que não é conhecido. ADR-007 antecede o ADR-011; a palavra
+-- "produto" ali foi informal, não uma decisão fechada sobre este grão.
+-- Decidido em 2026-08-14.
 CREATE TABLE marts.fato_estoque_casa (
     item_consumo_sk       bigint NOT NULL REFERENCES marts.dim_item_consumo (item_consumo_sk),
     data_snapshot         date NOT NULL,

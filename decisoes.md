@@ -250,6 +250,8 @@ Além disso, esses campos são **inúteis** para todos os objetivos do projeto. 
 <a name="adr-007"></a>
 ## ADR-007 — Três tipos de fato, todos naturais
 
+> **Revisado (2026-08-14).** O grão de `fato_estoque_casa` foi refinado de "produto" para **`item_consumo`** ao traduzir esta decisão em DDL (`sql/design/002_marts_design.sql`). Motivo: o ADR-011, escrito depois deste, é explícito que consumo se mede no genérico, não na marca — e a taxa de consumo (ADR-009) já é calculada nesse nível. Fatiar estoque por produto exigiria saber de antemão qual marca será comprada a seguir, o que não é conhecido. A palavra "produto" na tabela abaixo era redação informal, não uma decisão fechada sobre este grão especificamente.
+
 **Contexto**
 
 O processo real envolve três coisas que mudam em ritmos diferentes: a compra (evento), o estoque em casa (estado) e o item na lista (processo).
@@ -261,7 +263,7 @@ Três tabelas de fato, uma de cada tipo canônico de Kimball:
 | Tabela | Tipo | Grão | Por que este tipo |
 |---|---|---|---|
 | `fato_item_compra` | **Transacional** | 1 item de 1 nota | Evento imutável. Nunca muda depois de gravado. |
-| `fato_estoque_casa` | **Periodic snapshot** | 1 produto × 1 dia | Estado medido periodicamente. Existe linha mesmo sem movimento. |
+| `fato_estoque_casa` | **Periodic snapshot** | 1 item_consumo × 1 dia | Estado medido periodicamente. Existe linha mesmo sem movimento. |
 | `fato_item_lista` | **Accumulating snapshot** | 1 item adicionado à lista | **A linha evolui.** Cada marco carimba uma data. |
 
 **Sobre o accumulating snapshot**
@@ -811,7 +813,7 @@ Esta seção existe de propósito. A evolução do modelo é o registro mais hon
 
 ## Pendências
 
-- [ ] Consolidar SQL com as correções dos ADRs 005, 006, 009, 011 e 016
+- [x] Consolidar SQL com as correções dos ADRs 005, 006, 009, 011 e 016
 - [ ] Implementar o parser da NFC-e com higienização de PII (ADR-006)
 - [ ] `dim_apelido`: dicionário curado do vocabulário doméstico (dbt seed)
 - [ ] Migrar credenciais do frontend para variáveis de ambiente
