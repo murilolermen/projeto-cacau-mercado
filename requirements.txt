@@ -3,3 +3,5 @@ beautifulsoup4
 psycopg[binary]
 python-dotenv
 pytest
+dbt-core
+dbt-postgres

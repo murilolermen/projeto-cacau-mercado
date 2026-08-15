@@ -1,0 +1,22 @@
+# Vive dentro do repo (incomum, mas de propósito): só referencia nomes de
+# env var via env_var(), nunca um valor de credencial — então é seguro
+# commitar. Rodar sempre com --profiles-dir dbt_cacau (ou
+# DBT_PROFILES_DIR=dbt_cacau), senão o dbt procura em ~/.dbt/profiles.yml
+# e não acha este arquivo.
+#
+# São variáveis PRÓPRIAS do dbt (host/port/user/password/dbname
+# separados), diferentes do SUPABASE_DB_URL que o extract/ usa — mesma
+# conexão com o Supabase, só que o adapter dbt-postgres não aceita uma
+# DSN única em profiles.yml, só campos separados. Ver .env.example.
+cacau:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: "{{ env_var('SUPABASE_DB_HOST') }}"
+      port: "{{ env_var('SUPABASE_DB_PORT', '5432') | int }}"
+      user: "{{ env_var('SUPABASE_DB_USER', 'postgres') }}"
+      password: "{{ env_var('SUPABASE_DB_PASSWORD') }}"
+      dbname: "{{ env_var('SUPABASE_DB_NAME', 'postgres') }}"
+      schema: staging # fallback só quando um model não define +schema
+      threads: 4

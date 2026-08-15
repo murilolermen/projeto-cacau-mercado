@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: stg_nfce_nota
+    description: Uma linha por nota fiscal, 1:1 com raw.nfce_nota.
+    columns:
+      - name: chave_acesso
+        description: Chave de acesso de 44 dígitos, PK natural da nota (ADR-001).
+        tests:
+          - unique
+          - not_null
+      - name: cnpj_emitente
+        tests:
+          - not_null
+
+  - name: stg_nfce_item
+    description: Uma linha por item de nota, 1:1 com raw.nfce_item.
+    columns:
+      - name: chave_acesso
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_nfce_nota')
+                field: chave_acesso
+      - name: item_seq
+        tests:
+          - not_null
+      - name: codigo_interno
+        description: >
+          Junto com o CNPJ da nota, forma a chave natural do produto
+          (CNPJ, código_interno) — não o GTIN (ADR-005).
+        tests:
+          - not_null

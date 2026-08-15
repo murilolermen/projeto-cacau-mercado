@@ -1,0 +1,23 @@
+name: "cacau"
+version: "1.0.0"
+config-version: 2
+
+# Precisa bater com o nome do profile em profiles.yml.
+profile: "cacau"
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  cacau:
+    staging:
+      +materialized: view # staging é 1:1 com a fonte (ADR-004) — não custa
+      # nada manter como view, sem duplicar dado do schema raw.
+      +schema: staging

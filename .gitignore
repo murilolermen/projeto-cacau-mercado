@@ -7,9 +7,11 @@ __pycache__/
 .venv/
 venv/
 
-# dbt (a partir da Fase 3)
+# dbt
 dbt_packages/
 target/
 logs/
+# .user.yml: id anônimo de telemetria do dbt, gerado por máquina — não é do projeto
+.user.yml
 
 .DS_Store

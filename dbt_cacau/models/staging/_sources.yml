@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    description: >
+      Payload extraído pelo parser Python (extract/nfce), sem transformação
+      de negócio — ver ADR-004. Escrito fora do dbt.
+    tables:
+      - name: nfce_nota
+        loaded_at_field: capturado_em
+      - name: nfce_item
+        loaded_at_field: capturado_em
