@@ -1,0 +1,30 @@
+version: 2
+
+seeds:
+  - name: dim_apelido
+    description: >
+      Dicionário curado do vocabulário doméstico — estágio 1 da resolução
+      de identidade em cascata (ADR-013), antes do LLM e da fila humana.
+      Cresce por observação real, não por antecipação: hoje só tem os
+      apelidos já documentados no decisoes.md. "coube flor" é erro de
+      digitação recorrente, não apelido no sentido estrito — entra no
+      mesmo dicionário porque o efeito é o mesmo, normalizar texto solto
+      pro nome genérico certo.
+    columns:
+      - name: apelido
+        description: >
+          Como a família de fato digita — minúsculo, sem acento. Quem
+          consumir este seed precisa normalizar o texto de entrada
+          (lower + strip de acento) antes de fazer o match; essa
+          normalização ainda não existe como model (fica pra quando a
+          camada intermediate for construída).
+        tests:
+          - unique
+          - not_null
+      - name: nome_generico
+        description: >
+          Nome canônico. Deve bater com dim_item_consumo.nome_generico
+          quando essa tabela existir de fato (marts ainda é só design,
+          ver sql/design/002_marts_design.sql).
+        tests:
+          - not_null

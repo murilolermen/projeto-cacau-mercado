@@ -21,3 +21,10 @@ models:
       +materialized: view # staging é 1:1 com a fonte (ADR-004) — não custa
       # nada manter como view, sem duplicar dado do schema raw.
       +schema: staging
+
+seeds:
+  cacau:
+    # Schema próprio, separado de staging: seed é dado curado à mão, não
+    # derivado de raw — misturar os dois no mesmo schema confundiria a
+    # linhagem (ADR-004 é sobre dado que vem da fonte, isso não vem).
+    +schema: seeds
